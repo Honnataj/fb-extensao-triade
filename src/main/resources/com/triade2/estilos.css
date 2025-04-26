@@ -1,0 +1,75 @@
+.painel-esquerdo {
+    -fx-background-color: linear-gradient(to bottom, #0b719c, #00344a, #0b719c);
+}
+.painel-direito {
+    -fx-background-color: #ffffff;
+}
+.campo-texto {
+    -fx-background-color: #f6da83;
+    -fx-prompt-text-fill: #00344a;
+    -fx-text-fill: #00344a;
+    -fx-font-weight: normal;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+}
+.campo-botao {
+    -fx-background-color: #00344a;
+    -fx-text-fill: #f6da83;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 2);
+}
+.campo-botao:hover {
+    -fx-background-color: #0b719c;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 3);
+}
+.colunas-tabela {
+    -fx-alignment: CENTER-LEFT;
+    -fx-font-weight: bold;
+    -fx-background-color: #00344a;
+    -fx-text-fill: #f6da83;
+}
+.painel-superior {
+    -fx-background-color: linear-gradient(to bottom, #0b719c, #00344a);
+}
+/* Estilo para as linhas da tabela */
+.table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #00344a;
+    -fx-control-inner-background: #ffffff;
+}
+.table-row-cell:selected {
+    -fx-background-color: #f0f0f0;
+    -fx-text-fill: #00344a;
+}
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: #00344a;
+    -fx-border-width: 1px;
+    -fx-control-inner-background: #ffffff;
+}
+.table-view .column-header {
+    -fx-background-color: #00344a;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #f6da83;
+    -fx-font-weight: bold;
+}
+.table-view .table-cell {
+    -fx-text-fill: #00344a;
+    -fx-background-color: #ffffff;
+}
+/* Garantir que as células da tabela tenham fundo branco */
+.table-row-cell .table-cell {
+    -fx-background-color: #ffffff;
+}
+.table-row-cell:selected .table-cell {
+    -fx-background-color: #f0f0f0;
+}
+/* Estilo para campos desabilitados */
+.campo-texto:disabled {
+    -fx-background-color: #CCCCCC;
+    -fx-text-fill: #666666;
+}
