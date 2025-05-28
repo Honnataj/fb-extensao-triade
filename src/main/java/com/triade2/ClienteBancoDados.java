@@ -5,14 +5,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteBancoDados {
-    private final String url = "jdbc:sqlite:clientes.db";
+    private final String url = "jdbc:sqlite:triade.db";
 
     public ClienteBancoDados() {
         try (Connection conexao = DriverManager.getConnection(url);
-             Statement statement = conexao.createStatement()) {
-            String criacaoTabela = "CREATE TABLE IF NOT EXISTS Clientes " +
-                    "(codigo INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT NOT NULL, telefone TEXT NOT NULL)";
-            statement.execute(criacaoTabela);
+             Statement st = conexao.createStatement()) {
+            String criacaoTabela = "create table if not exists Cliente\n" +
+                    "(\n" +
+                    "    cod_cliente   integer primary key,\n" +
+                    "    razao_social  text,\n" +
+                    "    nome_fantasia text,\n" +
+                    "    cnpj          integer,\n" +
+                    "    cod_endereco  integer references Endereco (cod_endereco),\n" +
+                    "    telefone      text,\n" +
+                    "    celular       text,\n" +
+                    "    email         text,\n" +
+                    "    responsavel   text\n" +
+                    ");";
+            st.execute(criacaoTabela);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -21,12 +31,18 @@ public class ClienteBancoDados {
     public List<Cliente> listar() {
         List<Cliente> lista = new ArrayList<>();
         try (Connection conexao = DriverManager.getConnection(url);
-             Statement statement = conexao.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM Clientes")) {
-            while (resultSet.next()) {
-                lista.add(new Cliente(resultSet.getInt("codigo"),
-                        resultSet.getString("nome"),
-                        resultSet.getString("telefone")));
+             Statement st = conexao.createStatement();
+             ResultSet rs = st.executeQuery("SELECT * FROM Cliente")) {
+            while (rs.next()) {
+                lista.add(new Cliente(rs.getInt("cod_cliente"),
+                        rs.getString("razao_social"),
+                        rs.getString("nome_fantasia"),
+                        rs.getInt("cnpj"),
+                        rs.getInt("cod_endereco"),
+                        rs.getString("telefone"),
+                        rs.getString("celular"),
+                        rs.getString("email"),
+                        rs.getString("responsavel")));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,10 +52,18 @@ public class ClienteBancoDados {
 
     public void inserir(Cliente cliente) {
         try (Connection conexao = DriverManager.getConnection(url);
-             PreparedStatement preparedStatement = conexao.prepareStatement("INSERT INTO Clientes(nome, telefone) VALUES (?, ?)")) {
-            preparedStatement.setString(1, cliente.getNomeCliente());
-            preparedStatement.setString(2, cliente.getTelefoneCliente());
-            preparedStatement.executeUpdate();
+             PreparedStatement ps = conexao.prepareStatement("INSERT INTO Cliente(razao_social, nome_fantasia, cnpj, cod_endereco, telefone, celular, email, responsavel) " +
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
+            ps.setString(1, cliente.getRazaoSocial());
+            ps.setString(2, cliente.getNomeFantasia());
+            ps.setInt(3, cliente.getCnpj());
+            ps.setInt(4, cliente.getCodEndereco());
+            ps.setString(5, cliente.getTelefone());
+            ps.setString(6, cliente.getCelular());
+            ps.setString(7, cliente.getEmail());
+            ps.setString(8, cliente.getResponsavel());
+
+            ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,11 +71,18 @@ public class ClienteBancoDados {
 
     public void atualizar(Cliente cliente) {
         try (Connection conexao = DriverManager.getConnection(url);
-             PreparedStatement preparedStatement = conexao.prepareStatement("UPDATE Clientes SET nome=?, telefone=? WHERE codigo=?")) {
-            preparedStatement.setString(1, cliente.getNomeCliente());
-            preparedStatement.setString(2, cliente.getTelefoneCliente());
-            preparedStatement.setInt(3, cliente.getCodigoCliente());
-            preparedStatement.executeUpdate();
+             PreparedStatement ps = conexao.prepareStatement("UPDATE Cliente SET razao_social=?, nome_fantasia=?, cnpj=?, cod_endereco=?, telefone=?, celular=?, email=?, responsavel=? WHERE cod_cliente=?")) {
+            ps.setString(1, cliente.getRazaoSocial());
+            ps.setString(2, cliente.getNomeFantasia());
+            ps.setInt(3, cliente.getCnpj());
+            ps.setInt(4, cliente.getCodEndereco());
+            ps.setString(5, cliente.getTelefone());
+            ps.setString(6, cliente.getCelular());
+            ps.setString(7, cliente.getEmail());
+            ps.setString(8, cliente.getResponsavel());
+            ps.setInt(9, cliente.getCodCliente());
+
+            ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -59,9 +90,10 @@ public class ClienteBancoDados {
 
     public void deletar(int codigo) {
         try (Connection conexao = DriverManager.getConnection(url);
-             PreparedStatement preparedStatement = conexao.prepareStatement("DELETE FROM Clientes WHERE codigo=?")) {
-            preparedStatement.setInt(1, codigo);
-            preparedStatement.executeUpdate();
+             PreparedStatement ps = conexao.prepareStatement("DELETE FROM Cliente WHERE cod_cliente=?")) {
+            ps.setInt(1, codigo);
+
+            ps.executeUpdate();
         } catch (Exception e) {
             e.printStackTrace();
         }
