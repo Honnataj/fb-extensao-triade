@@ -4,14 +4,14 @@ public class Cliente {
     private int codCliente;
     private String razaoSocial;
     private String nomeFantasia;
-    private int cnpj;
+    private long cnpj;
     private int codEndereco;
     private String telefone;
     private String celular;
     private String email;
     private String responsavel;
 
-    public Cliente(String razaoSocial, String nomeFantasia, int cnpj, int codEndereco,
+    public Cliente(String razaoSocial, String nomeFantasia, long cnpj, int codEndereco,
                    String telefone, String celular, String email, String responsavel) {
         this.razaoSocial = razaoSocial;
         this.nomeFantasia = nomeFantasia;
@@ -23,7 +23,7 @@ public class Cliente {
         this.responsavel = responsavel;
     }
 
-    public Cliente(int codCliente, String razaoSocial, String nomeFantasia, int cnpj,
+    public Cliente(int codCliente, String razaoSocial, String nomeFantasia, long cnpj,
                    int codEndereco, String telefone, String celular, String email, String responsavel) {
         this(razaoSocial, nomeFantasia, cnpj, codEndereco, telefone, celular, email, responsavel);
         this.codCliente = codCliente;
@@ -54,11 +54,11 @@ public class Cliente {
         this.nomeFantasia = nomeFantasia;
     }
 
-    public int getCnpj() {
+    public long getCnpj() {
         return cnpj;
     }
 
-    public void setCnpj(int cnpj) {
+    public void setCnpj(long cnpj) {
         this.cnpj = cnpj;
     }
 

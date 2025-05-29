@@ -54,7 +54,7 @@ public class InicioController {
     @FXML
     private TableColumn<Cliente, String> colNomeFantasia;
     @FXML
-    private TableColumn<Cliente, Integer> colCnpj;
+    private TableColumn<Cliente, Long> colCnpj;
     @FXML
     private TableColumn<Cliente, String> colTelefone;
     @FXML
@@ -306,7 +306,7 @@ public class InicioController {
             // Preparar dados do cliente
             String razaoSocial = razaoSocialTF.getText();
             String nomeFantasia = nomeFantasiaTF.getText();
-            int cnpj = Integer.parseInt(cnpjTF.getText());
+            long cnpj = Long.parseLong(cnpjTF.getText());
             String telefone = telefoneTF.getText();
             String celular = celularTF.getText();
             String email = emailTF.getText();

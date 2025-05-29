@@ -37,7 +37,7 @@ public class ClienteBancoDados {
                 lista.add(new Cliente(rs.getInt("cod_cliente"),
                         rs.getString("razao_social"),
                         rs.getString("nome_fantasia"),
-                        rs.getInt("cnpj"),
+                        rs.getLong("cnpj"),
                         rs.getInt("cod_endereco"),
                         rs.getString("telefone"),
                         rs.getString("celular"),
@@ -56,7 +56,7 @@ public class ClienteBancoDados {
                      "VALUES (?, ?, ?, ?, ?, ?, ?, ?)")) {
             ps.setString(1, cliente.getRazaoSocial());
             ps.setString(2, cliente.getNomeFantasia());
-            ps.setInt(3, cliente.getCnpj());
+            ps.setLong(3, cliente.getCnpj());
             ps.setInt(4, cliente.getCodEndereco());
             ps.setString(5, cliente.getTelefone());
             ps.setString(6, cliente.getCelular());
@@ -74,7 +74,7 @@ public class ClienteBancoDados {
              PreparedStatement ps = conexao.prepareStatement("UPDATE Cliente SET razao_social=?, nome_fantasia=?, cnpj=?, cod_endereco=?, telefone=?, celular=?, email=?, responsavel=? WHERE cod_cliente=?")) {
             ps.setString(1, cliente.getRazaoSocial());
             ps.setString(2, cliente.getNomeFantasia());
-            ps.setInt(3, cliente.getCnpj());
+            ps.setLong(3, cliente.getCnpj());
             ps.setInt(4, cliente.getCodEndereco());
             ps.setString(5, cliente.getTelefone());
             ps.setString(6, cliente.getCelular());
