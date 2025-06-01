@@ -13,7 +13,7 @@
     -fx-background-radius: 5px;
 }
 .campo-botao {
-    -fx-background-color: #00344a;
+    -fx-background-color: #0b719c;
     -fx-text-fill: #f6da83;
     -fx-font-weight: bold;
     -fx-cursor: hand;
@@ -22,7 +22,7 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 3, 0, 0, 2);
 }
 .campo-botao:hover {
-    -fx-background-color: #0b719c;
+    -fx-background-color: #00344a;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 5, 0, 0, 3);
 }
 .colunas-tabela {
