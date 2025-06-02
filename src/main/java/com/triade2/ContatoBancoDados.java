@@ -60,4 +60,63 @@ public class ContatoBancoDados {
         }
     }
 
+    public void excluir(int codCliente, int numContato) {
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement("DELETE FROM Contato WHERE cod_cliente = ? AND num_contato = ?")) {
+            ps.setInt(1, codCliente);
+            ps.setInt(2, numContato);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void atualizar(Contato contato) {
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement("UPDATE Contato SET data_contato=?, autor_contato=? WHERE cod_cliente=? AND num_contato=?")) {
+            ps.setString(1, contato.getDataContato());
+            ps.setInt(2, contato.getAutorContato());
+            ps.setInt(3, contato.getCodCliente());
+            ps.setInt(4, contato.getNumContato());
+
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int encontrarUltimoContato(int codCliente) {
+        int ultimoContato = 0;
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement("SELECT MAX(num_contato) AS ultimo FROM Contato WHERE cod_cliente = ?")) {
+            ps.setInt(1, codCliente);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                ultimoContato = rs.getInt("ultimo");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // se não houver contatos, retorna 0
+        return ultimoContato;
+    }
+
+    public List<Contato> listarPorCliente(int codCliente) {
+        List<Contato> lista = new ArrayList<>();
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement("SELECT * FROM Contato WHERE cod_cliente = ?")) {
+            ps.setInt(1, codCliente);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(new Contato(rs.getInt("cod_cliente"),
+                        rs.getInt("num_contato"),
+                        rs.getString("data_contato"),
+                        rs.getInt("autor_contato")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
 }

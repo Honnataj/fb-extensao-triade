@@ -1,5 +1,6 @@
 package com.triade2;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -40,9 +41,17 @@ public class InicioController {
     @FXML
     private TextField bairroTF;
 
-    // ComboBox para o estado
+    // ComboBoxes
     @FXML
     private ComboBox<Estado> estadoCB;
+    @FXML
+    private ComboBox<String> contatoCB;
+
+    // Botão para adicionar contato
+    @FXML
+    private Button contatoBt;
+    @FXML
+    private Button contatoSalvarBt;
 
     // Elementos da tabela
     @FXML
@@ -65,6 +74,10 @@ public class InicioController {
     private TableColumn<Cliente, String> colResponsavel;
     @FXML
     private TableColumn<Cliente, Integer> colCodEndereco;
+    @FXML
+    private TableColumn<Cliente, String> colUltimoContato;
+    @FXML
+    private TableColumn<Cliente, String> colAutorUltimoContato;
 
     // Objetos de acesso a dados
     private final ClienteBancoDados clienteBancoDados = new ClienteBancoDados();
@@ -72,10 +85,12 @@ public class InicioController {
     private final MunicipioBancoDados municipioBancoDados = new MunicipioBancoDados();
     private final BairroBancoDados bairroBancoDados = new BairroBancoDados();
     private final EnderecoBancoDados enderecoBancoDados = new EnderecoBancoDados();
+    private final ContatoBancoDados contatoBancoDados = new ContatoBancoDados();
 
     // Listas observáveis
     private final ObservableList<Cliente> listaClientes = FXCollections.observableArrayList();
     private final ObservableList<Estado> listaEstados = FXCollections.observableArrayList();
+    private final ObservableList<String> listaOpcoesContato = FXCollections.observableArrayList("Empresa", "Cliente");
 
     // Botões para configuração das colunas
     @FXML
@@ -88,6 +103,9 @@ public class InicioController {
         // Configuração das colunas da tabela
         configurarColunas();
         colCodCliente.setVisible(false);
+
+        limparOpcoesContato();
+        contatoCB.setEditable(false);
 
         // Configuração inicial
         camposEditaveis(false);
@@ -116,6 +134,9 @@ public class InicioController {
             clienteSelecionado = novo;
             if (novo != null) {
                 preencherFormulario(novo);
+                camposEditaveis(false);
+                limparOpcoesContato();
+                mostrarBotao(contatoBt, true);
             } else {
                 limparFormulario();
             }
@@ -135,6 +156,23 @@ public class InicioController {
         colCelular.setCellValueFactory(new PropertyValueFactory<>("celular"));
         colResponsavel.setCellValueFactory(new PropertyValueFactory<>("responsavel"));
         colCodEndereco.setCellValueFactory(new PropertyValueFactory<>("codEndereco"));
+
+        // Configurar colunas adicionais para contatos
+        colUltimoContato.setCellValueFactory(cliente -> {
+            int codCliente = cliente.getValue().getCodCliente();
+            String dataUltimoContato = contatoBancoDados.encontrarUltimoContato(codCliente) > 0
+                    ? contatoBancoDados.listarPorCliente(codCliente).get(0).getDataContato()
+                    : "Nenhum contato";
+            return new SimpleStringProperty(dataUltimoContato);
+        });
+
+        colAutorUltimoContato.setCellValueFactory(cliente -> {
+            int codCliente = cliente.getValue().getCodCliente();
+            String autorUltimoContato = contatoBancoDados.encontrarUltimoContato(codCliente) > 0
+                    ? (contatoBancoDados.listarPorCliente(codCliente).get(0).getAutorContato() == 0 ? "Empresa" : "Cliente")
+                    : "Nenhum contato";
+            return new SimpleStringProperty(autorUltimoContato);
+        });
 
         // Configurar o menu de contexto para mostrar/ocultar colunas
         ContextMenu contextMenu = new ContextMenu();
@@ -187,6 +225,32 @@ public class InicioController {
                     }
                 }
             }
+        }
+    }
+
+    private void adicionarContato(Cliente cliente) {
+        try {
+            int ultimoContato = contatoBancoDados.encontrarUltimoContato(cliente.getCodCliente());
+            int numeroContato = ultimoContato + 1;
+
+            // adiciona a data atual como data do contato
+            String dataContato = java.time.LocalDate.now().toString();
+
+            int autorContato;
+            if (contatoCB.getValue().equals("Empresa")) {
+                autorContato = 0; // Contato da empresa
+            } else if (contatoCB.getValue().equals("Cliente")) {
+                autorContato = 1; // Contato do cliente
+            } else {
+                mostrarAlerta(Alert.AlertType.WARNING, "Selecione um tipo de contato válido.", "Erro");
+                return;
+            }
+
+            Contato contato = new Contato(cliente.getCodCliente(), numeroContato, dataContato, autorContato);
+            contatoBancoDados.inserir(contato);
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Contato salvo com sucesso!", "Sucesso");
+        } catch (Exception e) {
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro ao adicionar contato: " + e.getMessage(), "Erro");
         }
     }
 
@@ -300,6 +364,7 @@ public class InicioController {
     public void novoCliente() {
         limparFormulario();
         camposEditaveis(true);
+        limparOpcoesContato();
     }
 
     @FXML
@@ -367,5 +432,48 @@ public class InicioController {
         Alert alert = new Alert(tipo, mensagem);
         alert.setTitle(titulo);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void registrarContato() {
+        mostrarComboBox(contatoCB, true);
+        contatoCB.setItems(listaOpcoesContato);
+        mostrarBotao(contatoSalvarBt, true);
+    }
+
+    @FXML
+    private void salvarContato() {
+        if (contatoCB.getValue() == null || contatoCB.getValue().isBlank()) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Selecione um tipo de contato.", "Erro");
+            return;
+        }
+
+        String contato = contatoCB.getValue();
+        if (clienteSelecionado != null) {
+            adicionarContato(clienteSelecionado);
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Contato adicionado com sucesso!", "Sucesso");
+        } else {
+            mostrarAlerta(Alert.AlertType.WARNING, "Selecione um cliente para adicionar o contato.", "Erro");
+        }
+
+        // Limpar campos
+        contatoCB.setValue(null);
+        mostrarComboBox(contatoCB, false);
+        mostrarBotao(contatoSalvarBt, false);
+    }
+
+    private void limparOpcoesContato() {
+        contatoCB.setValue(null);
+        mostrarComboBox(contatoCB, false);
+        mostrarBotao(contatoSalvarBt, false);
+        mostrarBotao(contatoBt, false);
+    }
+
+    private void mostrarBotao(Button botao, boolean visivel) {
+        botao.setVisible(visivel);
+    }
+
+    private void mostrarComboBox(ComboBox<?> comboBox, boolean visivel) {
+        comboBox.setVisible(visivel);
     }
 }

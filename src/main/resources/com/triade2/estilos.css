@@ -12,6 +12,11 @@
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
 }
+
+#botaoContato, #botaoContatoSalvar {
+    -fx-background-color: #f6da83;
+    -fx-text-fill: #0b719c;
+}
 .campo-botao {
     -fx-background-color: #0b719c;
     -fx-text-fill: #f6da83;

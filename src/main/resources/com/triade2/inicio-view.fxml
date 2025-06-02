@@ -96,6 +96,9 @@
                         <Button onAction="#excluirCliente" prefWidth="100" styleClass="campo-botao" text="Excluir" />
                         <Button onAction="#alterarCliente" prefWidth="100" styleClass="campo-botao" text="Alterar" />
                         <Button onAction="#novoCliente" prefWidth="100" styleClass="campo-botao" text="Novo" />
+                  <Button id="botaoContato" fx:id="contatoBt" alignment="CENTER" onAction="#registrarContato" prefHeight="50.0" prefWidth="100" styleClass="campo-botao" text="Registrar contato" textAlignment="CENTER" wrapText="true" />
+                  <ComboBox id="comboContato" fx:id="contatoCB" editable="true" prefHeight="26.0" prefWidth="156.0" styleClass="campo-combo" />
+                  <Button id="botaoContatoSalvar" fx:id="contatoSalvarBt" alignment="CENTER" onAction="#salvarContato" prefHeight="50.0" prefWidth="100" styleClass="campo-botao" text="Salvar contato" textAlignment="CENTER" wrapText="true" />
                     </VBox>
                 </children>
             </HBox>
@@ -121,6 +124,8 @@
             <TableColumn fx:id="colCelular" text="Celular" />
             <TableColumn fx:id="colResponsavel" text="Responsável" />
             <TableColumn fx:id="colCodEndereco" text="Cód. Endereço" />
+            <TableColumn fx:id="colUltimoContato" text="Último Contato" />
+            <TableColumn fx:id="colAutorUltimoContato" text="Autor do Último Contato" />
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />
