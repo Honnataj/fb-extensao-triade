@@ -28,8 +28,7 @@
 .colunas-tabela {
     -fx-alignment: CENTER-LEFT;
     -fx-font-weight: bold;
-    -fx-background-color: #00344a;
-    -fx-text-fill: #0004ff;
+    -fx-text-fill: #00344a;
 }
 .painel-superior {
     -fx-background-color: linear-gradient(to bottom, #0b719c, #00344a);
@@ -54,7 +53,7 @@
     -fx-background-color: #00344a;
 }
 .table-view .column-header .label {
-    -fx-text-fill: #0004ff;
+    -fx-text-fill: #00344a;
     -fx-font-weight: bold;
 }
 .table-view .table-cell {
