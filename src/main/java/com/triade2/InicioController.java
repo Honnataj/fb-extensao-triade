@@ -1,5 +1,6 @@
 package com.triade2;
 
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,6 +76,20 @@ public class InicioController {
     @FXML
     private TableColumn<Cliente, Integer> colCodEndereco;
     @FXML
+    private TableColumn<Cliente, String> colLogradouro;
+    @FXML
+    private TableColumn<Cliente, Integer> colNumero;
+    @FXML
+    private TableColumn<Cliente, String> colBairro;
+    @FXML
+    private TableColumn<Cliente, String> colMunicipio;
+    @FXML
+    private TableColumn<Cliente, String> colEstado;
+    @FXML
+    private TableColumn<Cliente, String> colComplemento;
+    @FXML
+    private TableColumn<Cliente, Integer> colCep;
+    @FXML
     private TableColumn<Cliente, String> colUltimoContato;
     @FXML
     private TableColumn<Cliente, String> colAutorUltimoContato;
@@ -103,6 +118,7 @@ public class InicioController {
         // Configuração das colunas da tabela
         configurarColunas();
         colCodCliente.setVisible(false);
+        colCodEndereco.setVisible(false);
 
         limparOpcoesContato();
         contatoCB.setEditable(false);
@@ -156,6 +172,64 @@ public class InicioController {
         colCelular.setCellValueFactory(new PropertyValueFactory<>("celular"));
         colResponsavel.setCellValueFactory(new PropertyValueFactory<>("responsavel"));
         colCodEndereco.setCellValueFactory(new PropertyValueFactory<>("codEndereco"));
+
+        // Configurar colunas de endereço
+        colLogradouro.setCellValueFactory(cliente -> {
+            Endereco endereco = enderecoBancoDados.buscarPorCodigo(cliente.getValue().getCodEndereco());
+            return new SimpleStringProperty(endereco != null ? endereco.getLogradouro() : "N/A");
+        });
+
+        colNumero.setCellValueFactory(cliente -> {
+            Endereco endereco = enderecoBancoDados.buscarPorCodigo(cliente.getValue().getCodEndereco());
+            return new SimpleObjectProperty<>(endereco != null ? endereco.getNumero() : null);
+        });
+
+        colBairro.setCellValueFactory(cliente -> {
+            Endereco endereco = enderecoBancoDados.buscarPorCodigo(cliente.getValue().getCodEndereco());
+            if (endereco != null) {
+                Bairro bairro = bairroBancoDados.buscarPorCodigo(endereco.getCodBairro());
+                return new SimpleStringProperty(bairro != null ? bairro.getNome() : "N/A");
+            }
+            return new SimpleStringProperty("N/A");
+        });
+
+        colMunicipio.setCellValueFactory(cliente -> {
+            Endereco endereco = enderecoBancoDados.buscarPorCodigo(cliente.getValue().getCodEndereco());
+            if (endereco != null) {
+                Bairro bairro = bairroBancoDados.buscarPorCodigo(endereco.getCodBairro());
+                if (bairro != null) {
+                    Municipio municipio = municipioBancoDados.buscarPorCodigo(bairro.getCodMunicipio());
+                    return new SimpleStringProperty(municipio != null ? municipio.getNome() : "N/A");
+                }
+            }
+            return new SimpleStringProperty("N/A");
+        });
+
+        colEstado.setCellValueFactory(cliente -> {
+            Endereco endereco = enderecoBancoDados.buscarPorCodigo(cliente.getValue().getCodEndereco());
+            if (endereco != null) {
+                Bairro bairro = bairroBancoDados.buscarPorCodigo(endereco.getCodBairro());
+                if (bairro != null) {
+                    Municipio municipio = municipioBancoDados.buscarPorCodigo(bairro.getCodMunicipio());
+                    if (municipio != null) {
+                        Estado estado = estadoBancoDados.buscarPorCodigo(municipio.getCodEstado());
+                        return new SimpleStringProperty(estado != null ? estado.getNome() : "N/A");
+                    }
+                }
+            }
+            return new SimpleStringProperty("N/A");
+        });
+
+        colComplemento.setCellValueFactory(cliente -> {
+            Endereco endereco = enderecoBancoDados.buscarPorCodigo(cliente.getValue().getCodEndereco());
+            return new SimpleStringProperty(endereco != null ? endereco.getComplemento() : "N/A");
+        });
+
+        colCep.setCellValueFactory(cliente -> {
+            Endereco endereco = enderecoBancoDados.buscarPorCodigo(cliente.getValue().getCodEndereco());
+            return new SimpleObjectProperty<>(endereco != null ? endereco.getCep() : null);
+        });
+
 
         // Configurar colunas adicionais para contatos
         colUltimoContato.setCellValueFactory(cliente -> {

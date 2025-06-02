@@ -126,6 +126,13 @@
             <TableColumn fx:id="colCodEndereco" text="Cód. Endereço" />
             <TableColumn fx:id="colUltimoContato" text="Último Contato" />
             <TableColumn fx:id="colAutorUltimoContato" text="Autor do Último Contato" />
+            <TableColumn fx:id="colLogradouro" text="Logradouro" />
+            <TableColumn fx:id="colNumero" text="Número" />
+            <TableColumn fx:id="colBairro" text="Bairro" />
+            <TableColumn fx:id="colMunicipio" text="Município" />
+            <TableColumn fx:id="colEstado" text="Estado" />
+            <TableColumn fx:id="colComplemento" text="Complemento" />
+            <TableColumn fx:id="colCep" text="CEP" />
         </columns>
         <columnResizePolicy>
             <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />
