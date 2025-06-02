@@ -525,7 +525,6 @@ public class InicioController {
         String contato = contatoCB.getValue();
         if (clienteSelecionado != null) {
             adicionarContato(clienteSelecionado);
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Contato adicionado com sucesso!", "Sucesso");
         } else {
             mostrarAlerta(Alert.AlertType.WARNING, "Selecione um cliente para adicionar o contato.", "Erro");
         }
