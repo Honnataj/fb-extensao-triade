@@ -35,14 +35,14 @@ public class InicioController {
     private TextField complementoTF;
     @FXML
     private TextField cepTF;
+    @FXML
+    private TextField municipioTF;
+    @FXML
+    private TextField bairroTF;
 
-    // ComboBoxes para endereço
+    // ComboBox para o estado
     @FXML
     private ComboBox<Estado> estadoCB;
-    @FXML
-    private ComboBox<Municipio> municipioCB;
-    @FXML
-    private ComboBox<Bairro> bairroCB;
 
     // Elementos da tabela
     @FXML
@@ -76,8 +76,6 @@ public class InicioController {
     // Listas observáveis
     private final ObservableList<Cliente> listaClientes = FXCollections.observableArrayList();
     private final ObservableList<Estado> listaEstados = FXCollections.observableArrayList();
-    private final ObservableList<Municipio> listaMunicipios = FXCollections.observableArrayList();
-    private final ObservableList<Bairro> listaBairros = FXCollections.observableArrayList();
 
     // Botões para configuração das colunas
     @FXML
@@ -96,113 +94,21 @@ public class InicioController {
         configurarTabelaListener();
         carregarDados();
 
-        // Configuração dos ComboBoxes
-        estadoCB.setItems(listaEstados);
-        municipioCB.setItems(listaMunicipios);
-        bairroCB.setItems(listaBairros);
-
-        // Listeners para atualizar os ComboBoxes dependentes
-        estadoCB.setOnAction(e -> {
-            Estado estado = estadoCB.getValue();
-            if (estado != null) {
-                listaMunicipios.setAll(municipioBancoDados.listarPorEstado(estado.getCodEstado()));
-                municipioCB.setValue(null);
-                bairroCB.setValue(null);
-                listaBairros.clear();
-            }
-        });
-
-        municipioCB.setOnAction(e -> {
-            Municipio municipio = municipioCB.getValue();
-            if (municipio != null) {
-                listaBairros.setAll(bairroBancoDados.listarPorMunicipio(municipio.getCodMunicipio()));
-                bairroCB.setValue(null);
-            }
-        });
-
-        // Configurar ComboBoxes editáveis
-        configurarComboBoxEditavel(estadoCB, listaEstados);
-        configurarComboBoxEditavel(municipioCB, listaMunicipios);
-        configurarComboBoxEditavel(bairroCB, listaBairros);
-
-    }
-
-    private <T> void configurarComboBoxEditavel(ComboBox<T> comboBox, ObservableList<T> lista) {
-        comboBox.setEditable(true);
-
-        // Criar um StringConverter específico para o tipo
-        StringConverter<T> converter = new StringConverter<T>() {
+        estadoCB.setConverter(new StringConverter<>() {
             @Override
-            public String toString(T object) {
-                if (object == null) return "";
-                if (object instanceof Estado) return ((Estado) object).getNome();
-                if (object instanceof Municipio) return ((Municipio) object).getNome();
-                if (object instanceof Bairro) return ((Bairro) object).getNome();
-                return object.toString();
+            public String toString(Estado estado) {
+                return estado != null ? estado.getNome() : "";
             }
 
             @Override
-            public T fromString(String string) {
-                if (string == null || string.trim().isEmpty()) return null;
-
-                // Procurar por um item existente que corresponda ao texto
-                String textoNormalizado = string.trim().toLowerCase();
-                Optional<T> itemExistente = lista.stream()
-                        .filter(item -> toString(item).toLowerCase().equals(textoNormalizado))
-                        .findFirst();
-
-                if (itemExistente.isPresent()) {
-                    return itemExistente.get();
-                }
-
-                // Se não encontrou, criar um novo item
-                if (comboBox == estadoCB) {
-                    Estado novoEstado = new Estado(string.trim());
-                    String codEstado = estadoBancoDados.inserirRetornandoCodigo(novoEstado);
-                    if (codEstado != null) {
-                        novoEstado.setCodEstado(codEstado);
-                        lista.add((T) novoEstado);
-                        return (T) novoEstado;
-                    }
-                } else if (comboBox == municipioCB && estadoCB.getValue() != null) {
-                    Municipio novoMunicipio = new Municipio(string.trim(), estadoCB.getValue().getCodEstado());
-                    int codMunicipio = municipioBancoDados.inserirRetornandoCodigo(novoMunicipio);
-                    if (codMunicipio > 0) {
-                        novoMunicipio.setCodMunicipio(codMunicipio);
-                        lista.add((T) novoMunicipio);
-                        return (T) novoMunicipio;
-                    }
-                } else if (comboBox == bairroCB && municipioCB.getValue() != null) {
-                    Bairro novoBairro = new Bairro(string.trim(), municipioCB.getValue().getCodMunicipio());
-                    int codBairro = bairroBancoDados.inserirRetornandoCodigo(novoBairro);
-                    if (codBairro > 0) {
-                        novoBairro.setCodBairro(codBairro);
-                        lista.add((T) novoBairro);
-                        return (T) novoBairro;
-                    }
-                }
-
+            public Estado fromString(String string) {
                 return null;
             }
-        };
-
-        comboBox.setConverter(converter);
-
-        // Configurar autocompletar
-        comboBox.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue == null || newValue.isEmpty()) {
-                comboBox.setItems(lista);
-            } else {
-                String finalNewValue = newValue.toLowerCase();
-                ObservableList<T> filteredList = lista.filtered(item ->
-                        converter.toString(item).toLowerCase().contains(finalNewValue)
-                );
-                comboBox.setItems(filteredList);
-                if (!filteredList.isEmpty()) {
-                    comboBox.show();
-                }
-            }
         });
+
+        estadoCB.setEditable(false);
+        estadoCB.setItems(listaEstados);
+
     }
 
     private void configurarTabelaListener() {
@@ -275,8 +181,8 @@ public class InicioController {
                         Estado estado = estadoBancoDados.buscarPorCodigo(municipio.getCodEstado());
                         if (estado != null) {
                             estadoCB.setValue(estado);
-                            municipioCB.setValue(municipio);
-                            bairroCB.setValue(bairro);
+                            municipioTF.setText(municipio.getNome());
+                            bairroTF.setText(bairro.getNome());
                         }
                     }
                 }
@@ -298,7 +204,7 @@ public class InicioController {
                     emailTF.getText().isBlank() || responsavelTF.getText().isBlank() ||
                     logradouroTF.getText().isBlank() || numeroTF.getText().isBlank() ||
                     cepTF.getText().isBlank() || estadoCB.getValue() == null ||
-                    municipioCB.getValue() == null || bairroCB.getValue() == null) {
+                    municipioTF.getText().isBlank() || bairroTF.getText().isBlank()) {
                 mostrarAlerta(Alert.AlertType.WARNING, "Preencha todos os campos obrigatórios.", "Erro");
                 return;
             }
@@ -316,10 +222,10 @@ public class InicioController {
             // Preparar dados do endereço
             Estado estadoOb = estadoCB.getValue();
             String estado = estadoOb.getCodEstado();
-            Municipio municipioOb = municipioCB.getValue();
-            int municipio = municipioOb.getCodMunicipio();
-            Bairro bairroOb = bairroCB.getValue();
-            int bairro = bairroOb.getCodBairro();
+            String municipioNome = municipioTF.getText();
+            int municipio = municipioBancoDados.buscarCodigoPorNome(municipioNome);
+            String bairroNome = bairroTF.getText();
+            int bairro = bairroBancoDados.buscarCodigoPorNome(bairroNome);
             String logradouro = logradouroTF.getText();
             int numero = Integer.parseInt(numeroTF.getText());
             String complemento = complementoTF.getText();
@@ -328,6 +234,18 @@ public class InicioController {
 
             // Salvar endereço primeiro, se houver
             Integer codEndereco = null;
+
+            // Se bairro e município não existirem, criar novos
+            if (bairro < 0) {
+                if (municipio < 0) {
+                    Municipio novoMunicipio = new Municipio(municipioNome, estado);
+                    municipio = municipioBancoDados.inserirRetornandoCodigo(novoMunicipio);
+                }
+                Bairro novoBairro = new Bairro(bairroNome, municipio);
+                bairro = bairroBancoDados.inserirRetornandoCodigo(novoBairro);
+            }
+
+            // Criar ou atualizar o endereço
             Endereco endereco = new Endereco(logradouro, numero, complemento, cep, bairro);
 
             if (clienteSelecionado != null && clienteSelecionado.getCodEndereco() > 0) {
@@ -404,7 +322,8 @@ public class InicioController {
         // Campos de texto
         TextField[] campos = {
                 razaoSocialTF, nomeFantasiaTF, cnpjTF, telefoneTF, celularTF,
-                emailTF, responsavelTF, logradouroTF, numeroTF, complementoTF, cepTF
+                emailTF, responsavelTF, logradouroTF, numeroTF, complementoTF,
+                cepTF, municipioTF, bairroTF,
         };
 
         for (TextField campo : campos) {
@@ -419,8 +338,6 @@ public class InicioController {
 
         // ComboBoxes
         estadoCB.setDisable(!editavel);
-        municipioCB.setDisable(!editavel);
-        bairroCB.setDisable(!editavel);
     }
 
     @FXML
@@ -437,13 +354,11 @@ public class InicioController {
         numeroTF.clear();
         complementoTF.clear();
         cepTF.clear();
+        municipioTF.clear();
+        bairroTF.clear();
 
-        // Limpar comboboxes
+        // Limpar combobox
         estadoCB.setValue(null);
-        municipioCB.setValue(null);
-        bairroCB.setValue(null);
-        listaMunicipios.clear();
-        listaBairros.clear();
 
         clienteSelecionado = null;
     }
