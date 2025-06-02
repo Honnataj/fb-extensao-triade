@@ -21,7 +21,7 @@ public class BairroBancoDados {
             e.printStackTrace();
         }
     }
-
+    /*
     public List<Bairro> listar() {
         List<Bairro> lista = new ArrayList<>();
         try (Connection conexao = DriverManager.getConnection(url);
@@ -37,6 +37,7 @@ public class BairroBancoDados {
         }
         return lista;
     }
+    */
 
     public void inserir(Bairro bairro) {
         try (Connection conexao = DriverManager.getConnection(url);
@@ -74,17 +75,18 @@ public class BairroBancoDados {
             e.printStackTrace();
         }
     }
+
     public Bairro buscarPorCodigo(int codigo) {
         try (Connection conexao = DriverManager.getConnection(url);
              PreparedStatement ps = conexao.prepareStatement("SELECT * FROM Bairro WHERE cod_bairro = ?")) {
             ps.setInt(1, codigo);
-        
+
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new Bairro(
-                        rs.getInt("cod_bairro"),
-                        rs.getString("nome"),
-                        rs.getInt("cod_municipio")
+                            rs.getInt("cod_bairro"),
+                            rs.getString("nome"),
+                            rs.getInt("cod_municipio")
                     );
                 }
             }
@@ -93,43 +95,65 @@ public class BairroBancoDados {
         }
         return null;
     }
-public List<Bairro> listarPorMunicipio(int codMunicipio) {
-    List<Bairro> lista = new ArrayList<>();
-    try (Connection conexao = DriverManager.getConnection(url);
-         PreparedStatement ps = conexao.prepareStatement("SELECT * FROM Bairro WHERE cod_municipio = ?")) {
-        ps.setInt(1, codMunicipio);
-        
-        try (ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                lista.add(new Bairro(
-                    rs.getInt("cod_bairro"),
-                    rs.getString("nome"),
-                    rs.getInt("cod_municipio")
-                ));
+
+    public int buscarCodigoPorNome(String nome) {
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement("select cod_bairro from Bairro where nome = ?")) {
+            ps.setString(1, nome);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("cod_bairro");
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return -1;
+        // retorna -1 se não conseguir encontrar o código
     }
-    return lista;
-}
-public int inserirRetornandoCodigo(Bairro bairro) {
-    try (Connection conexao = DriverManager.getConnection(url);
-         PreparedStatement ps = conexao.prepareStatement(
-                 "INSERT INTO Bairro(nome, cod_municipio) VALUES (?, ?)", 
-                 Statement.RETURN_GENERATED_KEYS)) {
-        ps.setString(1, bairro.getNome());
-        ps.setInt(2, bairro.getCodMunicipio());
-        ps.executeUpdate();
-        
-        try (ResultSet rs = ps.getGeneratedKeys()) {
-            if (rs.next()) {
-                return rs.getInt(1);
+
+    /*
+    public List<Bairro> listarPorMunicipio(int codMunicipio) {
+        List<Bairro> lista = new ArrayList<>();
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement("SELECT * FROM Bairro WHERE cod_municipio = ?")) {
+            ps.setInt(1, codMunicipio);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(new Bairro(
+                            rs.getInt("cod_bairro"),
+                            rs.getString("nome"),
+                            rs.getInt("cod_municipio")
+                    ));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return lista;
     }
-    return -1;
-}
+     */
+
+    public int inserirRetornandoCodigo(Bairro bairro) {
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement(
+                     "insert into Bairro(nome, cod_municipio) values (?, ?)",
+                     Statement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, bairro.getNome());
+            ps.setInt(2, bairro.getCodMunicipio());
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+        // retorna -1 se não conseguir inserir
+    }
 }

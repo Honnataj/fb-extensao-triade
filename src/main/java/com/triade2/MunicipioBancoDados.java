@@ -22,6 +22,7 @@ public class MunicipioBancoDados {
         }
     }
 
+    /*
     public List<Municipio> listar() {
         List<Municipio> lista = new ArrayList<>();
         try (Connection conexao = DriverManager.getConnection(url);
@@ -37,11 +38,12 @@ public class MunicipioBancoDados {
         }
         return lista;
     }
+     */
 
     public void inserir(Municipio municipio) {
         try (Connection conexao = DriverManager.getConnection(url);
-             PreparedStatement ps = conexao.prepareStatement("INSERT INTO Municipio(nome, cod_estado) " +
-                     "VALUES (?, ?)")) {
+             PreparedStatement ps = conexao.prepareStatement("insert into Municipio(nome, cod_estado) " +
+                     "values (?, ?)")) {
             ps.setString(1, municipio.getNome());
             ps.setString(2, municipio.getCodEstado());
 
@@ -95,6 +97,23 @@ public class MunicipioBancoDados {
         return null;
     }
 
+    public int buscarCodigoPorNome(String nome) {
+        try (Connection conexao = DriverManager.getConnection(url);
+             PreparedStatement ps = conexao.prepareStatement("SELECT cod_municipio FROM Municipio WHERE nome = ?")) {
+            ps.setString(1, nome);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("cod_municipio");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /*
     public List<Municipio> listarPorEstado(String codEstado) {
         List<Municipio> lista = new ArrayList<>();
         try (Connection conexao = DriverManager.getConnection(url);
@@ -115,6 +134,7 @@ public class MunicipioBancoDados {
         }
         return lista;
     }
+     */
 
     public int inserirRetornandoCodigo(Municipio municipio) {
         try (Connection conexao = DriverManager.getConnection(url);
