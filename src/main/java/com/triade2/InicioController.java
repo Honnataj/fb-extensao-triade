@@ -89,6 +89,7 @@ public class InicioController {
     public void initialize() {
         // Configuração das colunas da tabela
         configurarColunas();
+        colCodCliente.setVisible(false);
 
         // Configuração inicial
         camposEditaveis(false);
