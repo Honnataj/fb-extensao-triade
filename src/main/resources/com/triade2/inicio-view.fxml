@@ -19,75 +19,86 @@
         <children>
             <HBox alignment="CENTER" prefHeight="476.0" prefWidth="960.0" spacing="20" VBox.vgrow="ALWAYS">
                 <children>
-                    <VBox alignment="CENTER" maxWidth="600" prefHeight="692.0" prefWidth="600.0" spacing="15" HBox.hgrow="ALWAYS">
-                  <Label text="Informações" textFill="#f6da83">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
-                        <!-- Dados básicos -->
-                        <HBox alignment="CENTER" prefHeight="0.0" prefWidth="600.0" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="Razão Social:" textFill="#f6da83" />
+                    <VBox alignment="CENTER" maxWidth="611.0" prefHeight="524.0" prefWidth="611.0" spacing="15" HBox.hgrow="ALWAYS">
+                        <HBox>
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="654.0" text="Informações" textFill="#f6da83">
+                                    <font>
+                                        <Font size="19.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
+                        <!-- Razão social, Nome fantasia, CNPJ -->
+                        <HBox alignment="CENTER" spacing="10">
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Razão social:" textFill="#f6da83" />
                             <TextField fx:id="razaoSocialTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
                         <HBox alignment="CENTER" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="Nome Fantasia:" textFill="#f6da83" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Nome fantasia:" textFill="#f6da83" />
                             <TextField fx:id="nomeFantasiaTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
                         <HBox alignment="CENTER" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="CNPJ:" textFill="#f6da83" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="CNPJ:" textFill="#f6da83" />
                             <TextField fx:id="cnpjTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
 
-                        <!-- Contatos -->
+                        <!-- Telefone, Celular -->
                         <HBox alignment="CENTER" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="Telefone:" textFill="#f6da83" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Telefone:" textFill="#f6da83" />
                             <TextField fx:id="telefoneTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
-                            <Label style="-fx-font-weight: bold;" text="Celular:" textFill="#f6da83" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Celular:" textFill="#f6da83" />
                             <TextField fx:id="celularTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
+
+                        <!-- E-mail, Responsável -->
                         <HBox alignment="CENTER" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="Email:" textFill="#f6da83" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="E-mail:" textFill="#f6da83" />
                             <TextField fx:id="emailTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
                         <HBox alignment="CENTER" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="Responsável:" textFill="#f6da83" />
-                            <TextField fx:id="responsavelTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Responsável:" textFill="#f6da83" />
+                            <TextField fx:id="responsavelTF" prefHeight="26.0" prefWidth="420.0" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
-                  <Label text="Endereço" textFill="#f6da83">
-                     <font>
-                        <Font size="19.0" />
-                     </font>
-                  </Label>
+
+                        <HBox>
+                            <children>
+                                <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="654.0" text="Endereço" textFill="#f6da83">
+                                    <font>
+                                        <Font size="19.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </HBox>
 
                         <!-- Endereço -->
-                        <HBox alignment="BOTTOM_CENTER" prefHeight="37.0" prefWidth="600.0" spacing="10">
-                            <Label prefHeight="18.0" prefWidth="57.0" style="-fx-font-weight: bold;" text="Estado:" textFill="#f6da83" />
-                            <ComboBox fx:id="estadoCB" editable="true" styleClass="campo-combo" />
-                        </HBox>
-                  <HBox alignment="CENTER" prefHeight="29.0" prefWidth="600.0">
-                     <children>
-                               <Label prefHeight="18.0" prefWidth="71.0" style="-fx-font-weight: bold;" text="Município:" textFill="#f6da83" />
-                        <TextField fx:id="municipioTF" prefWidth="163.0" styleClass="campo-texto" />
-                               <Label prefHeight="18.0" prefWidth="59.0" style="-fx-font-weight: bold;" text="   Bairro:" textFill="#f6da83" />
-                        <TextField fx:id="bairroTF" styleClass="campo-texto" />
-                     </children>
-                  </HBox>
                         <HBox alignment="CENTER" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="Logradouro:" textFill="#f6da83" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Estado:" textFill="#f6da83" />
+                            <ComboBox fx:id="estadoCB" editable="false" prefHeight="26.0" prefWidth="501.0" styleClass="campo-combo" HBox.hgrow="ALWAYS" />
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="10">
+                            <children>
+                                <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Município:" textFill="#f6da83" />
+                                <TextField fx:id="municipioTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
+                                <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Bairro:" textFill="#f6da83" />
+                                <TextField fx:id="bairroTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
+                            </children>
+                        </HBox>
+                        <HBox alignment="CENTER" spacing="10">
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Logradouro:" textFill="#f6da83" />
                             <TextField fx:id="logradouroTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
-                            <Label style="-fx-font-weight: bold;" text="Número:" textFill="#f6da83" />
-                            <TextField fx:id="numeroTF" prefWidth="100" styleClass="campo-texto" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Número:" textFill="#f6da83" />
+                            <TextField fx:id="numeroTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
                         <HBox alignment="CENTER" spacing="10">
-                            <Label style="-fx-font-weight: bold;" text="Complemento:" textFill="#f6da83" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="Complemento:" textFill="#f6da83" />
                             <TextField fx:id="complementoTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
-                            <Label style="-fx-font-weight: bold;" text="CEP:" textFill="#f6da83" />
-                            <TextField fx:id="cepTF" prefWidth="100" styleClass="campo-texto" />
+                            <Label alignment="CENTER_RIGHT" prefWidth="100.0" style="-fx-font-weight: bold;" text="CEP:" textFill="#f6da83" />
+                            <TextField fx:id="cepTF" styleClass="campo-texto" HBox.hgrow="ALWAYS" />
                         </HBox>
 
                         <!-- Botões -->
-                        <HBox alignment="CENTER" prefWidth="252.0" spacing="10">
+                        <HBox alignment="CENTER" spacing="10">
                             <Button onAction="#salvarCliente" prefWidth="100" styleClass="campo-botao" text="Salvar" />
                             <Button onAction="#limparFormulario" prefWidth="100" styleClass="campo-botao" text="Limpar" />
                         </HBox>
@@ -96,9 +107,9 @@
                         <Button onAction="#excluirCliente" prefWidth="100" styleClass="campo-botao" text="Excluir" />
                         <Button onAction="#alterarCliente" prefWidth="100" styleClass="campo-botao" text="Alterar" />
                         <Button onAction="#novoCliente" prefWidth="100" styleClass="campo-botao" text="Novo" />
-                  <Button id="botaoContato" fx:id="contatoBt" alignment="CENTER" onAction="#registrarContato" prefHeight="50.0" prefWidth="100" styleClass="campo-botao" text="Registrar contato" textAlignment="CENTER" wrapText="true" />
-                  <ComboBox id="comboContato" fx:id="contatoCB" editable="true" prefHeight="26.0" prefWidth="156.0" styleClass="campo-combo" />
-                  <Button id="botaoContatoSalvar" fx:id="contatoSalvarBt" alignment="CENTER" onAction="#salvarContato" prefHeight="50.0" prefWidth="100" styleClass="campo-botao" text="Salvar contato" textAlignment="CENTER" wrapText="true" />
+                        <Button id="botaoContato" fx:id="contatoBt" alignment="CENTER" onAction="#registrarContato" prefHeight="50.0" prefWidth="100" styleClass="campo-botao" text="Registrar contato" textAlignment="CENTER" wrapText="true" />
+                        <ComboBox id="comboContato" fx:id="contatoCB" editable="true" prefHeight="26.0" prefWidth="156.0" styleClass="campo-combo" />
+                        <Button id="botaoContatoSalvar" fx:id="contatoSalvarBt" alignment="CENTER" onAction="#salvarContato" prefHeight="50.0" prefWidth="100" styleClass="campo-botao" text="Salvar contato" textAlignment="CENTER" wrapText="true" />
                     </VBox>
                 </children>
             </HBox>
@@ -106,37 +117,37 @@
     </VBox>
 
     <!-- Tabela de clientes -->
-<VBox spacing="5">
-    <HBox fx:id="hboxBotoes" alignment="CENTER_RIGHT" spacing="10">
-        <padding>
-            <Insets bottom="5" left="5" right="5" top="5" />
-        </padding>
-    </HBox>
-    
-    <TableView fx:id="tabelaClientes" prefHeight="218.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
-        <columns>
-            <TableColumn fx:id="colCodCliente" text="Código" />
-            <TableColumn fx:id="colRazaoSocial" text="Razão Social" />
-            <TableColumn fx:id="colNomeFantasia" text="Nome Fantasia" />
-            <TableColumn fx:id="colCnpj" text="CNPJ" />
-            <TableColumn fx:id="colTelefone" text="Telefone" />
-            <TableColumn fx:id="colEmail" text="Email" />
-            <TableColumn fx:id="colCelular" text="Celular" />
-            <TableColumn fx:id="colResponsavel" text="Responsável" />
-            <TableColumn fx:id="colCodEndereco" text="Cód. Endereço" />
-            <TableColumn fx:id="colLogradouro" text="Logradouro" />
-            <TableColumn fx:id="colNumero" text="Número" />
-            <TableColumn fx:id="colBairro" text="Bairro" />
-            <TableColumn fx:id="colMunicipio" text="Município" />
-            <TableColumn fx:id="colEstado" text="Estado" />
-            <TableColumn fx:id="colComplemento" text="Complemento" />
-            <TableColumn fx:id="colCep" text="CEP" />
-            <TableColumn fx:id="colUltimoContato" text="Último Contato" />
-            <TableColumn fx:id="colAutorUltimoContato" text="Autor do Último Contato" />
-        </columns>
-        <columnResizePolicy>
-            <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />
-        </columnResizePolicy>
-    </TableView>
-</VBox>
+    <VBox spacing="5">
+        <HBox fx:id="hboxBotoes" alignment="CENTER_RIGHT" spacing="10">
+            <padding>
+                <Insets bottom="5" left="5" right="5" top="5" />
+            </padding>
+        </HBox>
+
+        <TableView fx:id="tabelaClientes" prefHeight="218.0" prefWidth="1000.0" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colCodCliente" text="Código" />
+                <TableColumn fx:id="colRazaoSocial" text="Razão Social" />
+                <TableColumn fx:id="colNomeFantasia" text="Nome Fantasia" />
+                <TableColumn fx:id="colCnpj" text="CNPJ" />
+                <TableColumn fx:id="colTelefone" text="Telefone" />
+                <TableColumn fx:id="colEmail" text="Email" />
+                <TableColumn fx:id="colCelular" text="Celular" />
+                <TableColumn fx:id="colResponsavel" text="Responsável" />
+                <TableColumn fx:id="colCodEndereco" text="Cód. Endereço" />
+                <TableColumn fx:id="colLogradouro" text="Logradouro" />
+                <TableColumn fx:id="colNumero" text="Número" />
+                <TableColumn fx:id="colBairro" text="Bairro" />
+                <TableColumn fx:id="colMunicipio" text="Município" />
+                <TableColumn fx:id="colEstado" text="Estado" />
+                <TableColumn fx:id="colComplemento" text="Complemento" />
+                <TableColumn fx:id="colCep" text="CEP" />
+                <TableColumn fx:id="colUltimoContato" text="Último Contato" />
+                <TableColumn fx:id="colAutorUltimoContato" text="Autor do Último Contato" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="UNCONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </VBox>
 </VBox>

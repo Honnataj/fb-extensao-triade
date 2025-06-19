@@ -140,7 +140,6 @@ public class InicioController {
             }
         });
 
-        estadoCB.setEditable(false);
         estadoCB.setItems(listaEstados);
 
     }
